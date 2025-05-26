@@ -1,10 +1,17 @@
-// get message with id
+const express = require("express")
+const router = express.Router()
+const messageController = require("../controllers/messageController");
 
-// get last message with session id
+// get the latest message in a session
+router.get("/latest/:sessionId", messageController.getLastMessage);
 
-// get 20 latest messages with session id and cursor (for lazy loading in frontend)
+// get all messages in a session (no pagination)
+router.get("/session/:sessionId/all", messageController.getAllMessages);
 
-// create message
+// send a new message
+router.post("/", messageController.sendMessage);
+
+module.exports = router
 
 
 
