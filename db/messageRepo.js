@@ -1,5 +1,5 @@
 const { db, TABLE_NAME } = require("../config/dynamodb");
-const { ulid } = require('ulid')
+const { ulid } = require("ulid")
 const { QueryCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 const createMessage = async (sessionId, sender, text) => {
