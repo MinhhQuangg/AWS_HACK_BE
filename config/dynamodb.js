@@ -20,4 +20,5 @@ module.exports = {
   db: docClient,
   TABLE_NAME: DYNAMO_TABLE,
   USERS_TABLE: DYNAMO_TABLE,
+  SCENARIOS_TABLE : DYNAMO_TABLE,
 };
