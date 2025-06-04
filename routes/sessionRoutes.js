@@ -1,11 +1,20 @@
+const express = require("express");
+const router = express.Router();
+const sessionController = require("../controllers/sessionController");
+
 // get session by id
+router.get("/:userId/:sessionId", sessionController.getSession)
 
-// get 10 latest sessions
+// get all sessions by scenarios
+router.get("/:userId/scenario/:scenarioId", sessionController.getSessionsByScenario)
 
-// get session by scenarios
+// get all sessions by user
+router.get("/:userId", sessionController.getAllSessionsByUserId)
 
 // create session
+router.post("/", sessionController.createSession)
 
-// update session
+// delete session
+router.delete("/:userId/:sessionId", sessionController.deleteSession)
 
-// delete session by id
+module.exports = router;

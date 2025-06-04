@@ -1,4 +1,6 @@
 const messageRepo = require("../db/messageRepo");
+const aiService = require("../services/aiService"); 
+const { MessageRole } = require("../utils/constant");
 
 // GET /latest/:sessionId
 const getLastMessage = async (req, res) => {
@@ -11,23 +13,29 @@ const getLastMessage = async (req, res) => {
         }
 
         res.status(200).json(message);
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
 // POST /
 const sendMessage = async (req, res) => {
-    const { sessionId, sender, text } = req.body;
+    const { sessionId, text } = req.body;
 
-    if (!sessionId || !sender || !text) {
+    if (!sessionId || !text) {
         return res.status(400).json({ error: "Missing fields" });
     }
 
     try {
-        const message = await messageRepo.createMessage(sessionId, sender, text);
-        res.status(201).json(message);
-    } catch (err) {
+        const userMessage = await messageRepo.createMessage(sessionId, MessageRole.USER, text);
+        
+        const aiText = await aiService.getReply(text);
+        const aiMessage = await messageRepo.createMessage(sessionId, MessageRole.AI, aiText);
+
+        res.status(201).json({ userMessage, aiMessage });
+    } 
+    catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
@@ -43,7 +51,8 @@ const getAllMessages = async (req, res) => {
         }
 
         res.status(200).json(messages);
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
