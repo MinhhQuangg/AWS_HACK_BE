@@ -5,11 +5,11 @@ const { QueryCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
 const createMessage = async (sessionId, sender, text) => {
     const msgId = ulid();
     const item = {
-      PK: `SESSION#${sessionId}`,
-      SK: `MESSAGE#${msgId}`,
-      sender,
-      text,
-      timestamp: new Date().toISOString()
+        PK: `SESSION#${sessionId}`,
+        SK: `MESSAGE#${msgId}`,
+        sender,
+        text,
+        timestamp: new Date().toISOString()
     };
 
     await db.send(new PutCommand({

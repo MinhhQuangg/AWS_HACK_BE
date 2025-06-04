@@ -1,6 +1,6 @@
 const MessageRole = {
-    USER: "user",
-    AI: "ai"
+    USER: "USER",
+    AI: "AI"
 };
   
 module.exports = { MessageRole };

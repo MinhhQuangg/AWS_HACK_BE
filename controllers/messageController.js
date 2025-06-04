@@ -1,6 +1,6 @@
 const messageRepo = require("../db/messageRepo");
 const aiService = require("../services/aiService"); 
-const MessageRole = require("../utils/constant");
+const { MessageRole } = require("../utils/constant");
 
 // GET /latest/:sessionId
 const getLastMessage = async (req, res) => {
