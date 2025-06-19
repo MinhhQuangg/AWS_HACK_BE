@@ -21,14 +21,14 @@ const getLastMessage = async (req, res) => {
 
 // POST /
 const sendMessage = async (req, res) => {
-    const { sessionId, text } = req.body;
+    const { sessionId, message } = req.body;
 
-    if (!sessionId || !text) {
+    if (!sessionId || !message) {
         return res.status(400).json({ error: "Missing fields" });
     }
 
     try {
-        const userMessage = await messageRepo.createMessage(sessionId, MessageRole.USER, text);
+        const userMessage = await messageRepo.createMessage(sessionId, MessageRole.USER, message);
         
         const aiText = await aiService.getReply(text);
         const aiMessage = await messageRepo.createMessage(sessionId, MessageRole.AI, aiText);
@@ -44,7 +44,7 @@ const sendMessage = async (req, res) => {
 const getAllMessages = async (req, res) => {
     try {
         const { sessionId } = req.params;
-        const messages = await messageRepo.getAllMessages(sessionId);
+        const messages = await messageRepo.getAllMessagesBySession(sessionId);
 
         if (!messages || messages.length === 0) {
             return res.status(404).json({ error: "No messages found" });

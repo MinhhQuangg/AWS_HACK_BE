@@ -1,7 +1,7 @@
 const scenarioRepo = require("../db/scenarioRepo");
 
 // GET /:scenarioId
-const getScenario = async (req, res) => {
+const getScenarioById = async (req, res) => {
     try {
         const { scenarioId } = req.params;
         const scenario = await scenarioRepo.getScenarioById(scenarioId);
@@ -18,17 +18,17 @@ const getScenario = async (req, res) => {
 
 // POST /
 const createScenario = async (req, res) => {
-    const { title, difficulty, goals, description } = req.body;
+    const { id, title, difficulty, description } = req.body;
 
-    if (!title || !difficulty || !goals || !description) {
+    if (!id || !title || !difficulty || !description) {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
     try {
         const scenario = await scenarioRepo.createScenario({
+            id,
             title,
             difficulty,
-            goals,
             description
         });
         res.status(201).json(scenario);
@@ -88,7 +88,7 @@ const deleteScenario = async (req, res) => {
 
 module.exports = {
     createScenario,
-    getScenario,
+    getScenarioById,
     getAllScenarios,
     updateScenario,
     deleteScenario

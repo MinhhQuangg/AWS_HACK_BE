@@ -1,17 +1,14 @@
 const { db, SCENARIOS_TABLE } = require("../config/dynamodb");
-const { ulid } = require('ulid');
 const { QueryCommand, PutCommand, GetCommand, DeleteCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 
 const createScenario = async (scenarioData) => {
-    const scenarioId = ulid();
     const item = {
-        PK: `SCENARIO#${scenarioId}`,
+        PK: `SCENARIO#${scenarioData.id}`,
         SK: 'META',
-        Type: 'Scenario',
+        scenarioId: scenarioData.id,
         title: scenarioData.title,
-        difficulty: scenarioData.difficulty,
-        goals: scenarioData.goals,
         description: scenarioData.description,
+        difficulty: scenarioData.difficulty,
         createdAt: new Date().toISOString()
     };
 
@@ -38,12 +35,12 @@ const getScenarioById = async (scenarioId) => {
 const getAllScenarios = async () => {
     const params = {
         TableName: SCENARIOS_TABLE,
-        KeyConditionExpression: "begins_with(PK, :pk) AND SK = :sk",
+        IndexName: "GSI1",
+        KeyConditionExpression: "SK = :meta",
         ExpressionAttributeValues: {
-            ":pk": "SCENARIO#",
-            ":sk": "META"
-        }
-    };
+          ":meta": "META",
+        },
+      };
 
     const res = await db.send(new QueryCommand(params));
     return res.Items;
