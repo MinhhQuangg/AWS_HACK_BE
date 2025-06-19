@@ -70,28 +70,6 @@ const getSessionsByScenario = async (userId, scenarioId) => {
     return res.Items || []
 }
 
-const getSessionMetaOnly = async (sessionId) => {
-    const result = await db.send(new GetCommand({
-        TableName: TABLE_NAME,
-        Key: {
-            PK: `SESSION#${sessionId}`,
-            SK: "META",
-        },
-    }));
-    return result.Item;
-};
-  
-const getScenarioDetails = async (userId, scenarioId) => {
-    const result = await db.send(new GetCommand({
-        TableName: TABLE_NAME,
-        Key: {
-            PK: `SCENARIO#${scenarioId}`,
-            SK: "META",
-        },
-    }));
-    return result.Item;
-}
-
 const deleteSession = async (userId, sessionId) => {
     await db.send(new DeleteCommand({
         TableName: TABLE_NAME,
@@ -108,6 +86,5 @@ module.exports = {
     getAllSessionsByUserId,
     getSessionsByScenario,
     getSessionMetaOnly,
-    getScenarioDetails,
     deleteSession
 }
