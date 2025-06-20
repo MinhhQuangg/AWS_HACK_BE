@@ -1,8 +1,7 @@
 const messageRepo = require("../db/messageRepo");
 const sessionRepo = require("../db/sessionRepo");
-const sessionRepo = require("../db/sessionRepo");
 const aiService = require("../services/aiService"); 
-const { MessageRole } = require("../utils/constant");
+const { MessageRole, ScenarioTopics } = require("../utils/constant");
 
 // POST /
 const sendMessage = async (req, res) => {
@@ -17,10 +16,10 @@ const sendMessage = async (req, res) => {
         const userMessage = await messageRepo.createMessage(sessionId, MessageRole.USER, message);
 
         // Get scenarioId from session, then get sessionId
-        const session = await sessionRepo.getSession(userId, sessionId);
+        const session = await sessionRepo.getSessionBySessionId(sessionId);
         const scenarioId = session?.scenarioId;
 
-        const scenario = await scenarioRepo.getScenarioById(scenarioId);
+        const scenario = ScenarioTopics[scenarioId];
         if (!scenario) {
             return res.status(404).json({ error: "Scenario not found" });
         }

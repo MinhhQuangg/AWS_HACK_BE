@@ -18,7 +18,7 @@ const createSession = async (req, res) => {
 }
 
 // GET /sessions/:userId/:sessionId
-const getSession = async (req, res) => {
+const getSessionBySessionId = async (req, res) => {
 	const { userId, sessionId } = req.params;
 
 	if (!userId || !sessionId) {
@@ -26,7 +26,7 @@ const getSession = async (req, res) => {
 	}
 
 	try {
-		const session = await sessionRepo.getSession(userId, sessionId)
+		const session = await sessionRepo.getSessionBySessionId(userId, sessionId)
 
 		if (!session) {
 			return res.status(404).json({ error: "Session not found" })
@@ -87,7 +87,7 @@ const deleteSession = async (req, res) => {
   
 module.exports = {
 	createSession,
-	getSession,
+	getSessionBySessionId,
 	getAllSessionsByUserId,
 	getSessionsByScenario,
 	deleteSession

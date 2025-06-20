@@ -28,17 +28,18 @@ const createSession = async (userId, scenarioId) => {
     return item
 }
 
-const getSession = async (userId, sessionId) => {
-    const res = await db.send(new GetCommand({
+const getSessionBySessionId = async (sessionId) => {
+    const res = await db.send(new QueryCommand({
         TableName: TABLE_NAME,
-        Key: {
-            PK: `USER#${userId}`,
-            SK: `SESSION#${sessionId}`
+        IndexName: "GSI3", 
+        KeyConditionExpression: "sessionId = :sessionId",
+        ExpressionAttributeValues: {
+          ":sessionId": sessionId
         }
-    }))
-
+    }));
+    
     console.log('getSession:', res)
-    return res.Item || null
+    return res.Items?.[0] || null;
 }
 
 const getAllSessionsByUserId = async (userId) => {
@@ -57,14 +58,14 @@ const getAllSessionsByUserId = async (userId) => {
 
 const getSessionsByScenario = async (userId, scenarioId) => {
     const res = await db.send(new QueryCommand({
-      TableName: TABLE_NAME,
-      KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk)",
-      FilterExpression: "scenarioId = :scenarioId",
-      ExpressionAttributeValues: {
-        ":pk": `USER#${userId}`,
-        ":sk": "SESSION#",
-        ":scenarioId": scenarioId
-      }
+        TableName: TABLE_NAME,
+        KeyConditionExpression: "PK = :pk AND begins_with(SK, :sk)",
+        FilterExpression: "scenarioId = :scenarioId",
+        ExpressionAttributeValues: {
+            ":pk": `USER#${userId}`,
+            ":sk": "SESSION#",
+            ":scenarioId": scenarioId
+        }
     }))
   
     return res.Items || []
@@ -82,9 +83,8 @@ const deleteSession = async (userId, sessionId) => {
 
 module.exports = {
     createSession,
-    getSession,
+    getSessionBySessionId,
     getAllSessionsByUserId,
     getSessionsByScenario,
-    getSessionMetaOnly,
     deleteSession
 }

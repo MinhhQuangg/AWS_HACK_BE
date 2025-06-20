@@ -4,8 +4,8 @@ const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
 const scenarioRoutes = require("./routes/scenarioRoutes")
-const messageRoutes = require("./routes/scenarioRoutes")
-const sessionRoutes = require("./routes/scenarioRoutes")
+const messageRoutes = require("./routes/messageRoutes")
+const sessionRoutes = require("./routes/sessionRoutes")
 
 const app = express();
 
