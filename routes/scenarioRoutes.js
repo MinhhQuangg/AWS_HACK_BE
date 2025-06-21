@@ -11,10 +11,4 @@ router.get("/all", scenarioController.getAllScenarios);
 // create a new scenario
 router.post("/", scenarioController.createScenario);
 
-// update a scenario
-router.put("/:scenarioId", scenarioController.updateScenario);
-
-// delete a scenario
-router.delete("/:scenarioId", scenarioController.deleteScenario);
-
 module.exports = router;

@@ -52,44 +52,8 @@ const getAllScenarios = async (req, res) => {
     }
 };
 
-// PUT /:scenarioId
-const updateScenario = async (req, res) => {
-    try {
-        const { scenarioId } = req.params;
-        const updates = req.body;
-
-        // Validate if there are any fields to update
-        if (Object.keys(updates).length === 0) {
-            return res.status(400).json({ error: "No fields to update" });
-        }
-
-        const updatedScenario = await scenarioRepo.updateScenario(scenarioId, updates);
-
-        if (!updatedScenario) {
-            return res.status(404).json({ error: "Scenario not found" });
-        }
-
-        res.status(200).json(updatedScenario);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
-
-// DELETE /:scenarioId
-const deleteScenario = async (req, res) => {
-    try {
-        const { scenarioId } = req.params;
-        await scenarioRepo.deleteScenario(scenarioId);
-        res.status(204).send();
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-};
-
 module.exports = {
     createScenario,
     getScenarioById,
     getAllScenarios,
-    updateScenario,
-    deleteScenario
 };

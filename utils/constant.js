@@ -5,16 +5,6 @@ const MessageRole = {
 
 const MAX_MESSAGES_IN_CACHE = 10
 
-const ScenarioIds = {
-    INTERVIEW: "job-interview",
-    SCHOOL: "school",
-    FRIENDSHIP: "friendship",
-    EMOTION: "emotion",
-    DAILY_LIFE: "daily-life",
-    COMMUNICATION: "communication",
-    SHOPPING: "shopping",
-}
-
 const ScenarioTopics = {
     "introduce-yourself": {
         title: "Introducing yourself professionally",
@@ -69,5 +59,5 @@ const ScenarioTopics = {
 };
   
     
-module.exports = { MessageRole, MAX_MESSAGES_IN_CACHE, ScenarioIds, ScenarioTopics };
+module.exports = { MessageRole, MAX_MESSAGES_IN_CACHE, ScenarioTopics };
   

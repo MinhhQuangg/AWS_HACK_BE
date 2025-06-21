@@ -38,7 +38,6 @@ const getSessionBySessionId = async (sessionId) => {
         }
     }));
     
-    console.log('getSession:', res)
     return res.Items?.[0] || null;
 }
 

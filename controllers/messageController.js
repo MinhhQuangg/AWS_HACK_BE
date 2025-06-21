@@ -18,7 +18,6 @@ const sendMessage = async (req, res) => {
         // Get scenarioId from session, then get sessionId
         const session = await sessionRepo.getSessionBySessionId(sessionId);
         const scenarioId = session?.scenarioId;
-
         const scenario = ScenarioTopics[scenarioId];
         if (!scenario) {
             return res.status(404).json({ error: "Scenario not found" });
