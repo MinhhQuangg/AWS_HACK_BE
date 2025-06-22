@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const scenarioRoutes = require("./routes/scenarioRoutes")
 const messageRoutes = require("./routes/messageRoutes")
 const sessionRoutes = require("./routes/sessionRoutes")
+const feedbackRoutes = require("./routes/feedbackRoutes")
 
 const app = express();
 
@@ -26,7 +27,6 @@ app.use('/user', express.static('public/user'));
 
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/messages", messageRoutes);
-// app.use("/api/feedback", require("./routes/feedbackRoutes"));
-app.use("/api/scenarios", scenarioRoutes);
+app.use("/api/feedback", feedbackRoutes);
 app.use('/api/users', userRoutes);
 module.exports = app;

@@ -1,7 +1,6 @@
 const { PollyClient, StartSpeechSynthesisTaskCommand } = require("@aws-sdk/client-polly");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { AWS_REGION, S3_BUCKET_NAME } = require("../config/env");
-const { v4: uuidv4 } = require("uuid");
 
 const pollyClient = new PollyClient({ region: AWS_REGION });
 
