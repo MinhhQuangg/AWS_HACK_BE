@@ -2,6 +2,7 @@ const messageRepo = require("../db/messageRepo");
 const sessionRepo = require("../db/sessionRepo");
 const aiService = require("../services/aiService"); 
 const { MessageRole, ScenarioTopics } = require("../utils/constant");
+const { synthesizeAndUpload } = require("../services/textToSpeechService");
 
 // POST /
 const sendMessage = async (req, res) => {
@@ -29,7 +30,13 @@ const sendMessage = async (req, res) => {
         const aiText = await aiService.getReply(history, scenario);
         const aiMessage = await messageRepo.createMessage(sessionId, MessageRole.AI, aiText);
 
-        res.status(201).json({ userMessage, aiMessage });
+        // Text-to-speech converter
+        const audioUrl = await synthesizeAndUpload(aiMessage.message);
+
+        res.status(201).json({ 
+            text: aiMessage,
+            audioUrl
+         });
     } 
     catch (err) {
         res.status(500).json({ error: err.message });
