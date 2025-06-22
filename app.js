@@ -25,8 +25,8 @@ app.use((req, res, next) => {
 
 app.use('/user', express.static('public/user'));
 
-app.use('/api/sessions', sessionRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/feedback', feedbackRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/feedbacks", feedbackRoutes);
 app.use('/api/users', userRoutes);
 module.exports = app;

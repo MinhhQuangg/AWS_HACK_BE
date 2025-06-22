@@ -13,7 +13,8 @@ const getFeedbackHandler = async (req, res) => {
     const session = await getSessionBySessionId(sessionId);
     if (!session) return res.status(404).json({ error: "Session not found" });
 
-    const scenario = getScenarioById(session.scenarioId); 
+    const scenario = await getScenarioById(session.scenarioId); 
+
     if (!scenario) return res.status(404).json({ error: "Scenario not found" });
 
     const messages = await getAllMessagesBySession(sessionId);

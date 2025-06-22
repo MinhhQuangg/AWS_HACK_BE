@@ -19,6 +19,7 @@ const getReply = async (messageHistory, scenario) => {
 
     const systemPrompt = `
     You are a supportive, friendly coach helping neurodivergent students (especially those with autism) practice real-world social scenarios.
+    Initially, when user hit "Get start", you give them the context only for them to respond. Don't start the conversation yet - user is starter.
 
     Each session involves a realistic situation. Based on the difficulty level from 1 to 5, adjust your speaking style:
 

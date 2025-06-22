@@ -37,7 +37,7 @@ const getFeedbackFromAI = async (messages, scenario) => {
 
         Conversation:
         ${formattedMessages}`.trim();
-
+    
     const command = new InvokeModelCommand({
         modelId: BEDROCK_CLAUDE_MODEL_ID,
         contentType: "application/json",
@@ -63,7 +63,15 @@ const getFeedbackFromAI = async (messages, scenario) => {
     try {
         const response = await client.send(command);
         const result = JSON.parse(new TextDecoder().decode(response.body));
-        return JSON.parse(result.content[0].text);
+
+        let feedbackText = result.content[0]?.text?.trim();
+
+        // Remove markdown formatting if it exists
+        if (feedbackText.startsWith("```json") || feedbackText.startsWith("```")) {
+            feedbackText = feedbackText.replace(/```json|```/g, "").trim();
+        }
+
+        return JSON.parse(feedbackText);
     } catch (err) {
         console.error("AI Feedback error:", err);
         return null;

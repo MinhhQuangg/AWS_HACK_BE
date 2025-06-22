@@ -51,7 +51,6 @@ const getAllSessionsByUserId = async (userId) => {
         }
     }))
 
-    console.log('getAllSessionsByUserId:', res)
     return res.Items || []
 }
 

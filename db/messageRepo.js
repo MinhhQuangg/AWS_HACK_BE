@@ -3,7 +3,6 @@ const { ulid } = require("ulid")
 const { QueryCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { MAX_MESSAGES_IN_CACHE } = require("../utils/constant")
 const { getMessages, setMessages } = require("../utils/cache")
-const messageCache = require("../utils/cache");
 
 const createMessage = async (sessionId, sender, message) => {
     const msgId = ulid();
