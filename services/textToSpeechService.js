@@ -1,5 +1,4 @@
 const { PollyClient, StartSpeechSynthesisTaskCommand } = require("@aws-sdk/client-polly");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { AWS_REGION, S3_BUCKET_NAME } = require("../config/env");
 
 const pollyClient = new PollyClient({ region: AWS_REGION });
@@ -26,16 +25,6 @@ const synthesizeAndUpload = async (text, voiceId = "Matthew") => {
         console.error("Polly TTS error:", err);
         throw err;
     }
-};
-
-// Helper: convert stream to buffer
-const streamToBuffer = async (stream) => {
-    return new Promise((resolve, reject) => {
-        const chunks = [];
-        stream.on("data", chunk => chunks.push(chunk));
-        stream.on("end", () => resolve(Buffer.concat(chunks)));
-        stream.on("error", reject);
-    });
 };
 
 module.exports = { synthesizeAndUpload };

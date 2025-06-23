@@ -1,5 +1,8 @@
 const { BedrockRuntimeClient, InvokeModelCommand } = require("@aws-sdk/client-bedrock-runtime");
 const { BEDROCK_CLAUDE_MODEL_ID, AWS_REGION } = require("../config/env");
+const { getFeedbackFromAI } = require("./feedbackService");
+const { getAllMessagesBySession } = require("./messageRepo");
+const { getSessionBySessionId } = require("./sessionRepo");
 
 const client = new BedrockRuntimeClient({ region: AWS_REGION });
 
@@ -77,5 +80,26 @@ const getFeedbackFromAI = async (messages, scenario) => {
         return null;
     }
 };
+
+const getFeedback = async (sessionId) => {
+    const existing = await getFeedback(sessionId);
+    if (existing) return res.json(existing);
+
+    const session = await getSessionBySessionId(sessionId);
+    if (!session) return res.status(404).json({ error: "Session not found" });
+
+    const scenario = await getScenarioById(session.scenarioId); 
+
+    if (!scenario) return res.status(404).json({ error: "Scenario not found" });
+
+    const messages = await getAllMessagesBySession(sessionId);
+    const feedback = await getFeedbackFromAI(messages, scenario);
+
+    if (!feedback) return res.status(500).json({ error: "Failed to generate feedback" });
+
+    const saved = await saveFeedback(sessionId, feedback);
+
+    return saved
+}
 
 module.exports = { getFeedbackFromAI };

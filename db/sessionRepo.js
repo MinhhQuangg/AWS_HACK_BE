@@ -69,6 +69,49 @@ const getSessionsByScenario = async (userId, scenarioId) => {
     return res.Items || []
 }
 
+const { db, TABLE_NAME } = require('../config/dynamodb');
+const { UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+
+// Update session fields by userId and sessionId
+const updateSession = async (userId, sessionId, updates) => {
+    const updateKeys = Object.keys(updates);
+    if (updateKeys.length === 0) return null;
+
+    const ExpressionAttributeNames = {};
+    const ExpressionAttributeValues = {};
+    const UpdateExpressions = [];
+
+    for (const key of updateKeys) {
+        ExpressionAttributeNames[`#${key}`] = key;
+        ExpressionAttributeValues[`:${key}`] = updates[key];
+        UpdateExpressions.push(`#${key} = :${key}`);
+    }
+
+    const updateExpression = 'SET ' + UpdateExpressions.join(', ');
+
+    try {
+        const res = await db.send(
+            new UpdateCommand({
+                TableName: TABLE_NAME,
+                Key: {
+                PK: `USER#${userId}`,
+                SK: `SESSION#${sessionId}`,
+                },
+                UpdateExpression: updateExpression,
+                ExpressionAttributeNames,
+                ExpressionAttributeValues,
+                ReturnValues: 'ALL_NEW',
+            })
+        );
+
+        return res.Attributes;
+    } catch (err) {
+        console.error('UpdateSession error:', err);
+        throw err;
+    }
+};
+
+
 const deleteSession = async (userId, sessionId) => {
     await db.send(new DeleteCommand({
         TableName: TABLE_NAME,
@@ -84,5 +127,6 @@ module.exports = {
     getSessionBySessionId,
     getAllSessionsByUserId,
     getSessionsByScenario,
+    updateSession,
     deleteSession
 }

@@ -67,6 +67,29 @@ const getSessionsByScenario = async (req, res) => {
   }
 };
 
+// PATCH /sessions/:userId/:sessionId
+const updateSession = async (req, res) => {
+  const { userId, sessionId } = req.params;
+  const updates = req.body;
+
+  if (!userId || !sessionId || !updates || Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: 'Missing required fields or body' });
+  }
+
+  try {
+    const updated = await sessionRepo.updateSession(userId, sessionId, updates);
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Session not found or update failed' });
+    }
+
+    res.status(200).json({ status: 'success', data: updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 // DELETE /sessions/:userId/:sessionId
 const deleteSession = async (req, res) => {
   const { userId, sessionId } = req.params;
@@ -83,10 +106,13 @@ const deleteSession = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   createSession,
   getSessionBySessionId,
   getAllSessionsByUserId,
   getSessionsByScenario,
+  updateSession,
   deleteSession,
 };
