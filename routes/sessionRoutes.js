@@ -3,7 +3,7 @@ const router = express.Router();
 const sessionController = require('../controllers/sessionController');
 
 // get session by id
-router.get('/:sessionId', sessionController.getSessionBySessionId);
+router.get('/session/:sessionId', sessionController.getSessionBySessionId);
 
 // get all sessions by scenarios
 router.get(
@@ -12,7 +12,7 @@ router.get(
 );
 
 // get all sessions by user
-router.get('/:userId', sessionController.getAllSessionsByUserId);
+router.get('/user/:userId', sessionController.getAllSessionsByUserId);
 
 // create session
 router.post('/', sessionController.createSession);
