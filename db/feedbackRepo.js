@@ -2,6 +2,7 @@ const { PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 const { db, TABLE_NAME } = require("../config/dynamodb");
 const { getAllMessagesBySession } = require("../db/messageRepo");
 const { getScenarioById } = require("../db/scenarioRepo");
+const { getFeedbackFromAI } = require("../services/feedbackService")
 
 const getFeedbackFromDB = async (sessionId) => {
     const res = await db.send(new GetCommand({
