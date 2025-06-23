@@ -1,8 +1,8 @@
-const { getFeedbackFromDB } = require("../db/feedbackRepo");
+const { getFeedback } = require("../db/feedbackRepo");
 
 const getFeedbackHandler = async (req, res) => {
     const { sessionId } = req.params;
-    const feedback = await getFeedbackFromDB(sessionId)
+    const feedback = await getFeedback(sessionId)
     res.json(feedback);
 };
 
