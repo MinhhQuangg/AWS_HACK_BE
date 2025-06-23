@@ -9,6 +9,7 @@ const synthesizeAndUpload = async (text, voiceId = "Matthew") => {
         OutputS3BucketName: S3_BUCKET_NAME,
         Text: text,
         TextType: "text",
+        ContentType: "audio/mpeg",
         VoiceId: voiceId,
         SampleRate: "22050",
       };

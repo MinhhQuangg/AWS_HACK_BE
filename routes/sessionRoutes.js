@@ -20,10 +20,6 @@ router.post('/', sessionController.createSession);
 // update session
 router.put("/", sessionController.updateSession)
 
-// update session
-router.post("/", sessionController.updateSession)
-
-
 // delete session
 router.delete('/:userId/:sessionId', sessionController.deleteSession);
 
