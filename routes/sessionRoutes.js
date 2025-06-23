@@ -18,7 +18,7 @@ router.get('/user/:userId', sessionController.getAllSessionsByUserId);
 router.post('/', sessionController.createSession);
 
 // update session
-router.put("/", sessionController.updateSession)
+router.put('/:userId/:sessionId', sessionController.updateSession);
 
 // delete session
 router.delete('/:userId/:sessionId', sessionController.deleteSession);
