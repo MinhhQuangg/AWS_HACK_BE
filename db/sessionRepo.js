@@ -8,6 +8,8 @@ const {
     UpdateCommand
 } = require("@aws-sdk/lib-dynamodb")
 
+const feedbackRepo = require("./feedbackRepo")
+
 const createSession = async (userId, scenarioId) => {
     const sessionId = ulid()
     const item = {
@@ -37,8 +39,20 @@ const getSessionBySessionId = async (sessionId) => {
           ":sessionId": sessionId
         }
     }));
+
+    const session = res.Items?.[0];
+
+    if (!session) return null
+
+    if (session.endTime) {
+        const feedback = feedbackRepo.getFeedback(sessionId)
     
-    return res.Items?.[0] || null;
+        if (feedback) {
+          session.feedback = feedback;
+        }
+      }
+    
+    return session
 }
 
 const getAllSessionsByUserId = async (userId) => {
@@ -68,9 +82,6 @@ const getSessionsByScenario = async (userId, scenarioId) => {
   
     return res.Items || []
 }
-
-const { db, TABLE_NAME } = require('../config/dynamodb');
-const { UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 
 // Update session fields by userId and sessionId
 const updateSession = async (userId, sessionId, updates) => {
