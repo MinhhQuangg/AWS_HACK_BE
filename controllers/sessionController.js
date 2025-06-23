@@ -18,9 +18,9 @@ const createSession = async (req, res) => {
 
 // GET /sessions/:userId/:sessionId
 const getSessionBySessionId = async (req, res) => {
-  const { userId, sessionId } = req.params;
+  const { sessionId } = req.params;
 
-  if (!userId || !sessionId) {
+  if (!sessionId) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
