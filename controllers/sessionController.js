@@ -16,7 +16,7 @@ const createSession = async (req, res) => {
   }
 };
 
-// GET /sessions/:userId/:sessionId
+// GET /sessions/:sessionId
 const getSessionBySessionId = async (req, res) => {
   const { sessionId } = req.params;
 
