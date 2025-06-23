@@ -1,7 +1,6 @@
 const { PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 const { db, TABLE_NAME } = require("../config/dynamodb");
 const { getAllMessagesBySession } = require("../db/messageRepo");
-const { getSessionBySessionId } = require("../db/sessionRepo");
 const { getScenarioById } = require("../db/scenarioRepo");
 
 const getFeedbackFromDB = async (sessionId) => {
@@ -33,22 +32,21 @@ const saveFeedback = async (sessionId, feedback) => {
 
 const getFeedback = async (sessionId) => {
     const existing = await getFeedbackFromDB(sessionId);
-    if (existing) return existing
+    if (existing) return existing;
+
+    const { getSessionBySessionId } = require("../db/sessionRepo");
 
     const session = await getSessionBySessionId(sessionId);
-    if (!session) return res.status(404).json({ error: "Session not found" });
+    if (!session) throw new Error("Session not found");
 
     const scenario = await getScenarioById(session.scenarioId); 
-
-    if (!scenario) return res.status(404).json({ error: "Scenario not found" });
+    if (!scenario) throw new Error("Scenario not found");
 
     const messages = await getAllMessagesBySession(sessionId);
     const feedback = await getFeedbackFromAI(messages, scenario);
+    if (!feedback) throw new Error("Failed to generate feedback");
 
-    if (!feedback) return res.status(500).json({ error: "Failed to generate feedback" });
-
-    const saved = await saveFeedback(sessionId, feedback);
-    return saved
+    return await saveFeedback(sessionId, feedback);
 }
 
 module.exports = { getFeedback, saveFeedback };
